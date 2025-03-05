@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Firm {
+  id             String          @id @default(cuid()) @db.Uuid
+  display        String
+  accessProfiles AccessProfile[]
+  userFirms      UserFirm[]
+  users          User[]
+}
+
+model AccessProfile {
+  id        String     @id @default(cuid()) @db.Uuid
+  firmId    String     @db.Uuid
+  firm      Firm       @relation(fields: [firmId], references: [id], onDelete: Cascade)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  userFirms UserFirm[]
+}
+
+model User {
+  id        String     @id @default(cuid()) @db.Uuid
+  firstName String
+  lastName  String
+  password  String
+  email     String     @unique
+  userFirms UserFirm[]
+  firms     Firm[]
+}
+
+model UserFirm {
+  id              String        @id @default(cuid()) @db.Uuid
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  firmId          String        @db.Uuid
+  userId          String        @db.Uuid
+  accessProfileId String        @db.Uuid
+  firm            Firm          @relation(fields: [firmId], references: [id], onDelete: Cascade)
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessProfile   AccessProfile @relation(fields: [accessProfileId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, firmId, accessProfileId]) // Existing unique constraint
+}
