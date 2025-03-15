@@ -47,5 +47,5 @@ model UserFirm {
   user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   accessProfile   AccessProfile @relation(fields: [accessProfileId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, firmId, accessProfileId])
+  @@unique([userId, firmId])
 }
