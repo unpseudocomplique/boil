@@ -1,0 +1,16 @@
+@import "tailwindcss" theme(static);
+@import "@nuxt/ui";
+
+
+@layer components {
+    .bg-base {
+        background-color: var(--ui-bg);
+    }
+
+    .card-base {
+        background-color: var(--ui-bg);
+        border-color: var(--ui-border);
+        border-width: 1px;
+        border-radius: var(--ui-radius);
+    }
+}

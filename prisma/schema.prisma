@@ -8,16 +8,18 @@ datasource db {
 }
 
 model Firm {
-  id             String          @id @default(cuid()) @db.Uuid
+  id             String          @id @default(cuid()) @db.VarChar(25) // Explicit length is good practice
   display        String
+  subdomain      String          @unique @default("boil")
   accessProfiles AccessProfile[]
   userFirms      UserFirm[]
   users          User[]
 }
 
 model AccessProfile {
-  id        String     @id @default(cuid()) @db.Uuid
-  firmId    String     @db.Uuid
+  id        String     @id @default(cuid()) @db.VarChar(25) // Explicit length
+  display   String
+  firmId    String     @db.VarChar(25) // Match Firm.id type
   firm      Firm       @relation(fields: [firmId], references: [id], onDelete: Cascade)
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
@@ -25,9 +27,9 @@ model AccessProfile {
 }
 
 model User {
-  id        String     @id @default(cuid()) @db.Uuid
-  firstName String
-  lastName  String
+  id        String     @id @default(cuid()) @db.VarChar(25) // Explicit length
+  firstname String
+  lastname  String
   password  String
   email     String     @unique
   userFirms UserFirm[]
@@ -35,15 +37,15 @@ model User {
 }
 
 model UserFirm {
-  id              String        @id @default(cuid()) @db.Uuid
+  id              String        @id @default(cuid()) @db.VarChar(25) // Explicit length
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
-  firmId          String        @db.Uuid
-  userId          String        @db.Uuid
-  accessProfileId String        @db.Uuid
+  firmId          String        @db.VarChar(25) // Match Firm.id type
+  userId          String        @db.VarChar(25)
+  accessProfileId String        @db.VarChar(25)
   firm            Firm          @relation(fields: [firmId], references: [id], onDelete: Cascade)
   user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   accessProfile   AccessProfile @relation(fields: [accessProfileId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, firmId, accessProfileId]) // Existing unique constraint
+  @@unique([userId, firmId, accessProfileId])
 }

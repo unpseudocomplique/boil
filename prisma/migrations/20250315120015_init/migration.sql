@@ -1,15 +1,17 @@
 -- CreateTable
 CREATE TABLE "Firm" (
-    "id" UUID NOT NULL,
+    "id" VARCHAR(25) NOT NULL,
     "display" TEXT NOT NULL,
+    "subdomain" TEXT NOT NULL DEFAULT 'boil',
 
     CONSTRAINT "Firm_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "AccessProfile" (
-    "id" UUID NOT NULL,
-    "firmId" UUID NOT NULL,
+    "id" VARCHAR(25) NOT NULL,
+    "display" TEXT NOT NULL,
+    "firmId" VARCHAR(25) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -18,9 +20,9 @@ CREATE TABLE "AccessProfile" (
 
 -- CreateTable
 CREATE TABLE "User" (
-    "id" UUID NOT NULL,
-    "firstName" TEXT NOT NULL,
-    "lastName" TEXT NOT NULL,
+    "id" VARCHAR(25) NOT NULL,
+    "firstname" TEXT NOT NULL,
+    "lastname" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "email" TEXT NOT NULL,
 
@@ -29,23 +31,26 @@ CREATE TABLE "User" (
 
 -- CreateTable
 CREATE TABLE "UserFirm" (
-    "id" UUID NOT NULL,
+    "id" VARCHAR(25) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "firmId" UUID NOT NULL,
-    "userId" UUID NOT NULL,
-    "accessProfileId" UUID NOT NULL,
+    "firmId" VARCHAR(25) NOT NULL,
+    "userId" VARCHAR(25) NOT NULL,
+    "accessProfileId" VARCHAR(25) NOT NULL,
 
     CONSTRAINT "UserFirm_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "_FirmToUser" (
-    "A" UUID NOT NULL,
-    "B" UUID NOT NULL,
+    "A" VARCHAR(25) NOT NULL,
+    "B" VARCHAR(25) NOT NULL,
 
     CONSTRAINT "_FirmToUser_AB_pkey" PRIMARY KEY ("A","B")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Firm_subdomain_key" ON "Firm"("subdomain");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
