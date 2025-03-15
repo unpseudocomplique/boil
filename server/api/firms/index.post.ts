@@ -22,6 +22,9 @@ export default defineEventHandler(async (event) => {
         data: {
           firmId: newFirm.id,
           display: "Admin",
+          managerUsers: true,
+          manageProfiles: true,
+          manageFirm: true,
           // Add any other default fields for AccessProfile here
         },
       });

@@ -17,13 +17,16 @@ model Firm {
 }
 
 model AccessProfile {
-  id        String     @id @default(cuid()) @db.VarChar(25) // Explicit length
-  display   String
-  firmId    String     @db.VarChar(25) // Match Firm.id type
-  firm      Firm       @relation(fields: [firmId], references: [id], onDelete: Cascade)
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  userFirms UserFirm[]
+  id             String     @id @default(cuid()) @db.VarChar(25) // Explicit length
+  display        String
+  managerUsers   Boolean    @default(false)
+  manageProfiles Boolean    @default(false)
+  manageFirm     Boolean    @default(false)
+  firmId         String     @db.VarChar(25) // Match Firm.id type
+  firm           Firm       @relation(fields: [firmId], references: [id], onDelete: Cascade)
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  userFirms      UserFirm[]
 }
 
 model User {

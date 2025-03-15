@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-const { data: firms } = await useFetch('/api/firms')
+const { data: firms } = await useFetch('/api/firms/adminEdit')
 </script>
 
 <template>
