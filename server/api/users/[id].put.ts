@@ -6,8 +6,6 @@ export default defineEventHandler(async (event) => {
 
     const userId = getRouterParam(event, 'id');
 
-    console.log('userId', userId)
-
 
     const body = await readBody(event);
 
@@ -28,7 +26,7 @@ export default defineEventHandler(async (event) => {
             throw createError({ statusCode: 404, message: 'User not found or not accessible' });
         }
         // Hash password if new password
-        let { accessProfileId, ...updateData } = validatedData
+        let { accessProfileId, password, ...updateData } = validatedData
         // if (validatedData.password) {
 
         //     const hashedPassword = await hashPassword(user.password)
@@ -38,7 +36,10 @@ export default defineEventHandler(async (event) => {
             where: {
                 id: userId,
             },
-            data: updateData,
+            data: {
+                ...updateData,
+                ...(password ? { password: await hashPassword(password) } : {}),
+            },
             include: { // include to return this data
                 userFirms: {
                     where: {

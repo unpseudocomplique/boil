@@ -61,6 +61,11 @@ const updateUser = async () => {
             <UFormField label="Lastname" required>
                 <UInput v-model="user.lastname" placeholder="Enter your last name" class="w-full" />
             </UFormField>
+
+            <UFormField label="Change password" required>
+                <UInput v-model="user.password" placeholder="Enter your password" class="w-full" />
+            </UFormField>
+
             <USelectMenu v-model="user.accessProfile" v-model:search-term="profileSearch" :items="profiles?.data || []"
                 :loading="status === 'pending'" ignore-filter icon="i-lucide-user" placeholder="Select a profile"
                 label-key="display" key="display">
