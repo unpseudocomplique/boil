@@ -13,6 +13,7 @@
     "@nuxt/ui": "^3.0.0",
     "@prisma/client": "^6.5.0",
     "@prisma/nuxt": "^0.3.0",
+    "@vueuse/nuxt": "^13.0.0",
     "nuxt": "^3.16.0",
     "nuxt-auth-utils": "^0.5.16",
     "prisma": "^6.5.0",

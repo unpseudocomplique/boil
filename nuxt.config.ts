@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-27',
   css: ['~/assets/css/main.css'],
-  modules: ['@nuxt/ui', 'nuxt-auth-utils'],
+  modules: ['@nuxt/ui', 'nuxt-auth-utils', '@vueuse/nuxt'],
 
   future: {
     compatibilityVersion: 4

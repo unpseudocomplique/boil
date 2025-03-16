@@ -2,10 +2,16 @@
 import { AccessProfile } from '@prisma/client';
 const UButton = resolveComponent('UButton')
 
-const { data: accessProfiles, pending, error, refresh } = await useFetch<{ data: AccessProfile[] }>('/api/access-profiles', {
+
+const page = ref(1)
+const search = ref('')
+const searchTermDebounced = refDebounced(search.value, 200)
+const { data: accessProfiles, error, refresh } = await useFetch('/api/access-profiles', {
+    query: { page, search: searchTermDebounced },
     transform: (response) => {
         return response
-    }
+    },
+    watch: [searchTermDebounced, page],
 });
 
 if (error.value) {
@@ -23,7 +29,6 @@ const columns = [
     {
         id: 'expand',
         cell: ({ row }) => {
-            console.log('row', row)
             return h(UButton, {
                 color: 'neutral',
                 variant: 'ghost',
@@ -36,17 +41,28 @@ const columns = [
 
     },
 ]
+
+const createProfile = async () => {
+    const reponse = await $fetch('/api/access-profiles/admin', {
+        method: 'POST',
+        body: {}
+    })
+
+    await navigateTo(`/management/profile/${reponse.id}`)
+}
 </script>
 
 <template>
-    <div>
+    <div class="flex flex-col gap-4 p-4">
+        <div class="flex justify-between gap-4 flex-wrap">
+            <h1>Profile management</h1>
+            <UButton @click="createProfile">
+                Create new profile
+            </UButton>
+        </div>
         <UTable v-if="accessProfiles" :data="accessProfiles.data" :columns="columns">
         </UTable>
-        <div v-else-if="pending" class="flex items-center justify-center p-4">
-            <p>Loading access profiles...</p>
-        </div>
-        <div v-else-if="error" class="flex items-center justify-center p-4 text-red-500">
-            <p>Failed to fetch access profiles.</p>
-        </div>
+        <UPagination v-model:page="page" :total="accessProfiles?.pagination.total"
+            :items-per-page="accessProfiles?.pagination.perPage" />
     </div>
 </template>

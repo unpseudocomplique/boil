@@ -11,7 +11,7 @@ const data = ref(users.value.map((user) => {
         firstname: user.firstname,
         lastname: user.lastname,
         email: user.email,
-        profile: user.userFirms[0].accessProfile,
+        accessProfile: user.userFirms[0].accessProfile,
     }
 }))
 
@@ -37,7 +37,7 @@ const columns = [
     },
     {
         header: 'Profile',
-        accessorKey: 'profile.display',
+        accessorKey: 'accessProfile.display',
     }
 ]
 
